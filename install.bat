@@ -1,17 +1,29 @@
 @echo off
 echo Setting up TTS environment...
 
-python --version >nul 2>&1
-if errorlevel 1 (
-    echo Python is not installed or not in PATH.
-    echo Please install Python from https://www.python.org/downloads/ and make sure it's added to PATH.
-    echo Then run this script again.
-    pause
-    exit /b 1
+REM Check for Python in ComfyUI directory
+if exist "..\python.exe" (
+    set PYTHON_EXE="..\python.exe"
+    goto :python_found
 )
 
+REM Check for Python in PATH
+python --version >nul 2>&1
+if %errorlevel% == 0 (
+    set PYTHON_EXE=python
+    goto :python_found
+)
+
+echo Python is not found in ComfyUI directory or PATH.
+echo Please ensure ComfyUI has an embedded Python installation or install Python system-wide.
+pause
+exit /b 1
+
+:python_found
+echo Using Python: %PYTHON_EXE%
+
 if not exist venv (
-    python -m venv venv
+    %PYTHON_EXE% -m venv venv
 ) else (
     echo Virtual environment already exists.
 )
