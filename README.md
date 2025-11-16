@@ -21,9 +21,8 @@ A ComfyUI custom node for text-to-speech integration with a local TTS server.
 
 ### ComfyUI Node
 
-1. Copy the `__init__.py` file to your ComfyUI `custom_nodes` folder (e.g., `ComfyUI/custom_nodes/ComfyUI_Text2Speech/__init__.py`).
-2. Install `requests` in your ComfyUI environment: `pip install requests`.
-3. Restart ComfyUI.
+1. The `__init__.py` file is already in the `custom_nodes` folder.
+2. Restart ComfyUI.
 
 ## Usage
 
