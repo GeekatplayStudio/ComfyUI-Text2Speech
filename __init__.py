@@ -96,10 +96,13 @@ class HttpTTSToAudio:
 
     def do_tts(self, text, language, server_url, text_file_path="", output_directory="", voice="en-US-AriaNeural", rate=180, volume=1.0, timeout_seconds=300, auto_timeout=True):
         # Load text from file if provided
+        source_filename = "tts_output"
         if text_file_path:
             if os.path.isfile(text_file_path):
                 with open(text_file_path, 'r', encoding='utf-8') as f:
                     text = f.read().strip()
+                # Extract filename without extension for output naming
+                source_filename = os.path.splitext(os.path.basename(text_file_path))[0]
             else:
                 raise RuntimeError(f"Text file not found: {text_file_path}")
         
@@ -139,8 +142,11 @@ class HttpTTSToAudio:
             out_dir = output_directory.strip() if output_directory.strip() else folder_paths.get_output_directory()
             os.makedirs(out_dir, exist_ok=True)
             
-            # Save audio file
-            out_name = os.path.basename(path)
+            # Generate descriptive filename: originalname_voice_YYYYMMDD_HHMMSS.wav
+            from datetime import datetime
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            voice_short = voice.replace("en-", "").replace("-Neural", "")  # e.g., "US-Aria"
+            out_name = f"{source_filename}_{voice_short}_{timestamp}.wav"
             out_path = os.path.join(out_dir, out_name)
             with open(out_path, "wb") as f:
                 f.write(audio_bytes)
