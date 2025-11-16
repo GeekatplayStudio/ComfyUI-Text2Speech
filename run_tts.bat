@@ -1,12 +1,20 @@
 @echo off
 echo Starting TTS server...
 
-if not exist venv (
-    echo Virtual environment not found. Run install.bat first.
-    pause
-    exit /b 1
+if exist venv (
+    call venv\Scripts\activate
+    set PYTHON_CMD=python
+) else (
+    REM Check for embedded Python
+    if exist "..\..\..\python_embeded\python.exe" (
+        set PYTHON_CMD="..\..\..\python_embeded\python.exe"
+    ) else if exist "..\..\python_embeded\python.exe" (
+        set PYTHON_CMD="..\..\python_embeded\python.exe"
+    ) else if exist "..\python_embeded\python.exe" (
+        set PYTHON_CMD="..\python_embeded\python.exe"
+    ) else (
+        set PYTHON_CMD=python
+    )
 )
 
-call venv\Scripts\activate
-
-python tts_server.py
+%PYTHON_CMD% tts_server.py

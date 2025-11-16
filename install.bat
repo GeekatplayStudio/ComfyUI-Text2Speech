@@ -40,16 +40,32 @@ exit /b 1
 :python_found
 echo Using Python: %PYTHON_EXE%
 
-if not exist venv (
-    %PYTHON_EXE% -m venv venv
+REM Set PIP_EXE based on Python location
+if "%PYTHON_EXE%" == "..\..\..\python_embeded\python.exe" (
+    set PIP_EXE="..\..\..\python_embeded\Scripts\pip.exe"
+    set USE_VENV=false
+) else if "%PYTHON_EXE%" == "..\..\python_embeded\python.exe" (
+    set PIP_EXE="..\..\python_embeded\Scripts\pip.exe"
+    set USE_VENV=false
+) else if "%PYTHON_EXE%" == "..\python_embeded\python.exe" (
+    set PIP_EXE="..\python_embeded\Scripts\pip.exe"
+    set USE_VENV=false
 ) else (
-    echo Virtual environment already exists.
+    set PIP_EXE=pip
+    set USE_VENV=true
 )
 
-call venv\Scripts\activate
+if "%USE_VENV%" == "true" (
+    if not exist venv (
+        %PYTHON_EXE% -m venv venv
+    ) else (
+        echo Virtual environment already exists.
+    )
+    call venv\Scripts\activate
+)
 
-pip install --upgrade pip
-pip install -r requirements.txt
+%PIP_EXE% install --upgrade pip
+%PIP_EXE% install -r requirements.txt
 
 echo TTS setup complete. Run run_tts.bat to start the server.
 pause
