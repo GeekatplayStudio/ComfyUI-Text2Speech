@@ -5,7 +5,7 @@ A ComfyUI custom node for text-to-speech integration with a local TTS server.
 ## Features
 
 - Custom ComfyUI node `HttpTTSToAudio` for sending text to a local TTS server.
-- Local TTS server using Coqui TTS (XTTS v2 model).
+- Local TTS server using pyttsx3 (offline TTS engine).
 - Easy setup with batch files for Windows.
 
 ## Prerequisites

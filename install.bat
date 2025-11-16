@@ -3,25 +3,25 @@ echo Setting up TTS environment...
 
 REM Check for Python in ComfyUI root python_embeded directory
 if exist "..\..\..\python_embeded\python.exe" (
-    set PYTHON_EXE="..\..\..\python_embeded\python.exe"
+    set PYTHON_EXE=..\..\..\python_embeded\python.exe
     goto :python_found
 )
 
 REM Check for Python in ComfyUI python_embeded directory (higher in tree)
 if exist "..\..\python_embeded\python.exe" (
-    set PYTHON_EXE="..\..\python_embeded\python.exe"
+    set PYTHON_EXE=..\..\python_embeded\python.exe
     goto :python_found
 )
 
 REM Check for Python in ComfyUI python_embeded directory
 if exist "..\python_embeded\python.exe" (
-    set PYTHON_EXE="..\python_embeded\python.exe"
+    set PYTHON_EXE=..\python_embeded\python.exe
     goto :python_found
 )
 
 REM Check for Python in ComfyUI directory
 if exist "..\python.exe" (
-    set PYTHON_EXE="..\python.exe"
+    set PYTHON_EXE=..\python.exe
     goto :python_found
 )
 
@@ -42,13 +42,13 @@ echo Using Python: %PYTHON_EXE%
 
 REM Set PIP_EXE based on Python location
 if "%PYTHON_EXE%" == "..\..\..\python_embeded\python.exe" (
-    set PIP_EXE="..\..\..\python_embeded\Scripts\pip.exe"
+    set PIP_EXE=..\..\..\python_embeded\Scripts\pip.exe
     set USE_VENV=false
 ) else if "%PYTHON_EXE%" == "..\..\python_embeded\python.exe" (
-    set PIP_EXE="..\..\python_embeded\Scripts\pip.exe"
+    set PIP_EXE=..\..\python_embeded\Scripts\pip.exe
     set USE_VENV=false
 ) else if "%PYTHON_EXE%" == "..\python_embeded\python.exe" (
-    set PIP_EXE="..\python_embeded\Scripts\pip.exe"
+    set PIP_EXE=..\python_embeded\Scripts\pip.exe
     set USE_VENV=false
 ) else (
     set PIP_EXE=pip

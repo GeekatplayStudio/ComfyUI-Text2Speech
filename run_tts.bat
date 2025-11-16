@@ -7,13 +7,17 @@ if exist venv (
 ) else (
     REM Check for embedded Python
     if exist "..\..\..\python_embeded\python.exe" (
-        set PYTHON_CMD="..\..\..\python_embeded\python.exe"
-    ) else if exist "..\..\python_embeded\python.exe" (
-        set PYTHON_CMD="..\..\python_embeded\python.exe"
-    ) else if exist "..\python_embeded\python.exe" (
-        set PYTHON_CMD="..\python_embeded\python.exe"
+        set PYTHON_CMD=..\..\..\python_embeded\python.exe
     ) else (
-        set PYTHON_CMD=python
+        if exist "..\..\python_embeded\python.exe" (
+            set PYTHON_CMD=..\..\python_embeded\python.exe
+        ) else (
+            if exist "..\python_embeded\python.exe" (
+                set PYTHON_CMD=..\python_embeded\python.exe
+            ) else (
+                set PYTHON_CMD=python
+            )
+        )
     )
 )
 
