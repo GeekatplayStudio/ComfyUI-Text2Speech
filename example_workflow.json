@@ -1,6 +1,6 @@
 {
-  "last_node_id": 5,
-  "last_link_id": 4,
+  "last_node_id": 6,
+  "last_link_id": 5,
   "nodes": {
     "1": {
       "id": 1,
@@ -26,11 +26,31 @@
     },
     "2": {
       "id": 2,
-      "type": "HttpTTSToAudio",
-      "pos": [250, 0],
-      "size": [300, 150],
+      "type": "TTSServerStatus",
+      "pos": [0, 150],
+      "size": [300, 100],
       "flags": {},
       "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "status",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "properties": { "Node name for S&R": "TTSServerStatus" },
+      "widgets_values": ["http://127.0.0.1:5002/status"]
+    },
+    "3": {
+      "id": 3,
+      "type": "HttpTTSToAudio",
+      "pos": [250, 0],
+      "size": [300, 200],
+      "flags": {},
+      "order": 2,
       "mode": 0,
       "inputs": [
         {
@@ -48,16 +68,21 @@
           "slot_index": 0
         }
       ],
-      "properties": {},
-      "widgets_values": ["en", "http://127.0.0.1:5002/tts"]
+      "properties": { "Node name for S&R": "HttpTTSToAudio" },
+      "widgets_values": [
+        "Hello from local TTS in ComfyUI.",
+        "en",
+        "http://127.0.0.1:5002/tts",
+        ""
+      ]
     },
-    "3": {
-      "id": 3,
+    "4": {
+      "id": 4,
       "type": "LoadAudio",
       "pos": [600, 0],
       "size": [200, 100],
       "flags": {},
-      "order": 2,
+      "order": 3,
       "mode": 0,
       "inputs": [
         {
@@ -77,13 +102,13 @@
       "properties": {},
       "widgets_values": []
     },
-    "4": {
-      "id": 4,
+    "5": {
+      "id": 5,
       "type": "LoadImage",
       "pos": [850, 0],
       "size": [200, 100],
       "flags": {},
-      "order": 3,
+      "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -96,13 +121,13 @@
       "properties": {},
       "widgets_values": ["path/to/image.png"]
     },
-    "5": {
-      "id": 5,
+    "6": {
+      "id": 6,
       "type": "VideoCombine",
       "pos": [1100, 0],
       "size": [200, 100],
       "flags": {},
-      "order": 4,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
@@ -122,10 +147,10 @@
     }
   },
   "links": [
-    [1, 1, 0, 2, 0, "STRING"],
-    [2, 2, 0, 3, 0, "STRING"],
-    [3, 3, 0, 5, 1, "AUDIO"],
-    [4, 4, 0, 5, 0, "IMAGE"]
+    [1, 1, 0, 3, 0, "STRING"],
+    [2, 3, 0, 4, 0, "STRING"],
+    [3, 4, 0, 6, 1, "AUDIO"],
+    [4, 5, 0, 6, 0, "IMAGE"]
   ],
   "groups": [],
   "config": {},
