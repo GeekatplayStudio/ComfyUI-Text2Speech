@@ -5,7 +5,9 @@ A ComfyUI custom node for text-to-speech integration with a local TTS server.
 ## Features
 
 - Custom ComfyUI node `HttpTTSToAudio` for sending text to a local TTS server.
-- Local TTS server using pyttsx3 (offline TTS engine).
+- Option to load text from a file.
+- Server status check node `TTSServerStatus`.
+- Local TTS server using pyttsx3 (offline TTS engine), outputs MP3 files.
 - Easy setup with batch files for Windows.
 
 ## Prerequisites
@@ -26,9 +28,10 @@ A ComfyUI custom node for text-to-speech integration with a local TTS server.
 
 ## Usage
 
-- Use the `HttpTTSToAudio` node in ComfyUI under `Audio/TTS`.
-- Input text, language, and server URL.
-- Output is the path to the generated audio file.
+- Use the `HttpTTSToAudio` node in ComfyUI under `Audio/TTS` to generate speech from text or a text file.
+- Use the `TTSServerStatus` node to check if the server is running.
+- Input text, optional text file path, language, and server URL.
+- Output is the path to the generated MP3 audio file.
 
 ## Workflow
 

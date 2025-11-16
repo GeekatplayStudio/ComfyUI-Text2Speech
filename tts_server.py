@@ -2,6 +2,7 @@ from flask import Flask, request, send_file, jsonify
 import pyttsx3
 import os
 import uuid
+from pydub import AudioSegment
 
 app = Flask(__name__)
 engine = pyttsx3.init()
@@ -18,28 +19,42 @@ def tts_route():
     if not text:
         return jsonify({"error": "No text"}), 400
 
-    out_name = f"{uuid.uuid4().hex}.wav"
-    out_path = os.path.join(OUTPUT_DIR, out_name)
+    wav_name = f"{uuid.uuid4().hex}.wav"
+    wav_path = os.path.join(OUTPUT_DIR, wav_name)
+    mp3_name = f"{uuid.uuid4().hex}.mp3"
+    mp3_path = os.path.join(OUTPUT_DIR, mp3_name)
 
     # Set properties if needed
     # engine.setProperty('voice', voice_id)  # for language, but pyttsx3 has limited support
 
     # Generate audio
-    engine.save_to_file(text, out_path)
+    engine.save_to_file(text, wav_path)
     engine.runAndWait()
 
-    return jsonify({
-        "ok": True,
-        "file": out_name,
-        "path": out_path
-    })
+    # Convert to mp3
+    try:
+        audio = AudioSegment.from_wav(wav_path)
+        audio.export(mp3_path, format="mp3")
+        os.remove(wav_path)  # remove wav
+        return jsonify({
+            "ok": True,
+            "file": mp3_name,
+            "path": mp3_path
+        })
+    except Exception as e:
+        return jsonify({"error": f"Conversion failed: {str(e)}"}), 500
 
 @app.route("/audio/<fname>", methods=["GET"])
 def get_audio(fname):
     path = os.path.join(OUTPUT_DIR, fname)
     if not os.path.isfile(path):
         return jsonify({"error": "Not found"}), 404
-    return send_file(path, mimetype="audio/wav")
+    mimetype = "audio/mpeg" if fname.endswith(".mp3") else "audio/wav"
+    return send_file(path, mimetype=mimetype)
+
+@app.route("/status", methods=["GET"])
+def status():
+    return jsonify({"status": "running"})
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5002)
