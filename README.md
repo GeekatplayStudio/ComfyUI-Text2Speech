@@ -28,7 +28,7 @@ A ComfyUI custom node for text-to-speech integration with a local TTS server.
 
 ## Usage
 
-- Use the `HttpTTSToAudio` node in ComfyUI under `Audio/TTS` to generate speech from text or a text file.
+- Use the `HttpTTSToAudio` node in ComfyUI under `GeekatPlay/TTS` to generate speech from text or a text file.
 - Use the `TTSServerStatus` node to check if the server is running.
 - Input text, optional text file path, language, and server URL.
 - Output is the path to the generated MP3 audio file.
