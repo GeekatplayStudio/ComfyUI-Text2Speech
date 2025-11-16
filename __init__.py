@@ -1,13 +1,25 @@
+""" 
+ComfyUI Text-to-Speech Node
+GeekatPlay Studio - https://github.com/GeekatPlayStudio
+
+Provides high-quality text-to-speech using Microsoft Edge TTS with pyttsx3 fallback.
+Requires a local Flask server (tts_server.py) running on port 5002.
+"""
+
 import os
-import json
 import requests
 import folder_paths
 
 class HttpTTSToAudio:
     """
-    Sends text to a local TTS server and returns an audio file path.
-    Input: text (string), language (string), optional text_file_path
-    Output: audio filepath (string)
+    Text-to-Speech node that connects to a local TTS server.
+    
+    Features:
+    - High-quality neural voices via Microsoft Edge TTS
+    - 13 voice options across US, GB, AU, CA, and IN English variants
+    - Text file input support
+    - Custom output directory selection
+    - Adjustable speech rate and volume
     """
 
     @classmethod
@@ -27,7 +39,37 @@ class HttpTTSToAudio:
             },
             "optional": {
                 "text_file_path": ("STRING", {
-                    "default": ""
+                    "default": "",
+                    "file_picker": "file"
+                }),
+                "output_directory": ("STRING", {
+                    "default": "",
+                    "file_picker": "directory"
+                }),
+                "voice": ([
+                    "en-US-AriaNeural", 
+                    "en-US-ZiraNeural", 
+                    "en-US-JennyNeural", 
+                    "en-US-GuyNeural",
+                    "en-GB-SoniaNeural", 
+                    "en-GB-RyanNeural", 
+                    "en-GB-LibbyNeural",
+                    "en-AU-NatashaNeural", 
+                    "en-AU-WilliamNeural",
+                    "en-CA-ClaraNeural", 
+                    "en-CA-LiamNeural",
+                    "en-IN-NeerjaNeural", 
+                    "en-IN-PrabhatNeural"
+                ],),
+                "rate": ("INT", {
+                    "default": 180,
+                    "min": 50,
+                    "max": 400
+                }),
+                "volume": ("FLOAT", {
+                    "default": 1.0,
+                    "min": 0.0,
+                    "max": 1.0
                 })
             }
         }
@@ -37,7 +79,8 @@ class HttpTTSToAudio:
     FUNCTION = "do_tts"
     CATEGORY = "geekatplay/TTS"
 
-    def do_tts(self, text, language, server_url, text_file_path=""):
+    def do_tts(self, text, language, server_url, text_file_path="", output_directory="", voice="en-US-AriaNeural", rate=180, volume=1.0):
+        # Load text from file if provided
         if text_file_path:
             if os.path.isfile(text_file_path):
                 with open(text_file_path, 'r', encoding='utf-8') as f:
@@ -45,35 +88,47 @@ class HttpTTSToAudio:
             else:
                 raise RuntimeError(f"Text file not found: {text_file_path}")
         
+        # Prepare request payload for TTS server
         payload = {
             "text": text,
-            "language": language
+            "language": language,
+            "voice": voice,
+            "rate": rate,
+            "volume": volume
         }
+        
         try:
+            # Send TTS request to local server
             resp = requests.post(server_url, json=payload, timeout=120)
             resp.raise_for_status()
             data = resp.json()
+            
             path = data.get("path")
             if not path or not os.path.isfile(path):
                 raise RuntimeError(f"No file returned from TTS server: {data}")
-            # Copy to ComfyUI temp dir
+            
+            # Copy audio file to output directory
             with open(path, "rb") as f:
                 audio_bytes = f.read()
-            temp_dir = folder_paths.get_temp_directory()
+            
+            # Determine output directory
+            out_dir = output_directory.strip() if output_directory.strip() else folder_paths.get_output_directory()
+            os.makedirs(out_dir, exist_ok=True)
+            
+            # Save audio file
             out_name = os.path.basename(path)
-            out_path = os.path.join(temp_dir, out_name)
+            out_path = os.path.join(out_dir, out_name)
             with open(out_path, "wb") as f:
                 f.write(audio_bytes)
+            
             return (out_path,)
         except Exception as e:
-            print("TTS HTTP error:", e)
-            return ("",)
+            raise RuntimeError(f"TTS request failed: {str(e)}")
 
 class TTSServerStatus:
     """
-    Checks if the TTS server is running.
-    Input: server_url
-    Output: status (string)
+    Health check node for the TTS server.
+    Verifies that the Flask TTS server is running and accessible.
     """
 
     @classmethod

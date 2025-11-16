@@ -1,4 +1,10 @@
-pyttsx3
-flask
-requests
-pydub
+# ComfyUI Text-to-Speech Node Dependencies
+# GeekatPlay Studio - https://github.com/GeekatPlayStudio
+
+# Core TTS engines
+edge-tts       # Microsoft Edge TTS (primary, high-quality neural voices)
+pyttsx3        # Cross-platform TTS (fallback)
+
+# Server and HTTP
+flask          # Local TTS server
+requests       # HTTP client for node-server communication
