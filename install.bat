@@ -1,6 +1,12 @@
 @echo off
 echo Setting up TTS environment...
 
+REM Check for Python in ComfyUI root python_embeded directory
+if exist "..\..\..\python_embeded\python.exe" (
+    set PYTHON_EXE="..\..\..\python_embeded\python.exe"
+    goto :python_found
+)
+
 REM Check for Python in ComfyUI python_embeded directory (higher in tree)
 if exist "..\..\python_embeded\python.exe" (
     set PYTHON_EXE="..\..\python_embeded\python.exe"
