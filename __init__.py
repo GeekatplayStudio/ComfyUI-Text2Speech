@@ -35,7 +35,7 @@ class HttpTTSToAudio:
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("audio_path",)
     FUNCTION = "do_tts"
-    CATEGORY = "GeekatPlay/TTS"
+    CATEGORY = "geekatplay/TTS"
 
     def do_tts(self, text, language, server_url, text_file_path=""):
         if text_file_path:
@@ -89,7 +89,7 @@ class TTSServerStatus:
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("status",)
     FUNCTION = "check_status"
-    CATEGORY = "GeekatPlay/TTS"
+    CATEGORY = "geekatplay/TTS"
 
     def check_status(self, server_url):
         try:
