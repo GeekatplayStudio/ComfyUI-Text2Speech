@@ -8,6 +8,10 @@ A ComfyUI custom node for text-to-speech integration with a local TTS server.
 - Local TTS server using Coqui TTS (XTTS v2 model).
 - Easy setup with batch files for Windows.
 
+## Prerequisites
+
+- Python 3.8+ installed and added to PATH. Download from [python.org](https://www.python.org/downloads/).
+
 ## Installation
 
 ### TTS Server Setup
