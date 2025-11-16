@@ -1,6 +1,10 @@
 """ 
 TTS Server for ComfyUI Text-to-Speech Node
-GeekatPlay Studio - https://github.com/GeekatPlayStudio
+GeekatPlay Studio
+
+GitHub: https://github.com/GeekatPlayStudio
+YouTube: @geekatplay | @geekatplay-ru (Russian)
+Patreon: https://patreon.com/geekatplay
 
 Flask server providing text-to-speech via Microsoft Edge TTS with pyttsx3 fallback.
 Runs on localhost:5002
@@ -8,7 +12,6 @@ Runs on localhost:5002
 Endpoints:
 - POST /tts: Generate speech audio from text
 - GET /status: Server health check
-- GET /audio/<filename>: Retrieve generated audio file
 """
 
 from flask import Flask, request, jsonify

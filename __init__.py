@@ -1,6 +1,10 @@
 """ 
 ComfyUI Text-to-Speech Node
-GeekatPlay Studio - https://github.com/GeekatPlayStudio
+GeekatPlay Studio
+
+GitHub: https://github.com/GeekatPlayStudio
+YouTube: @geekatplay | @geekatplay-ru (Russian)
+Patreon: https://patreon.com/geekatplay
 
 Provides high-quality text-to-speech using Microsoft Edge TTS with pyttsx3 fallback.
 Requires a local Flask server (tts_server.py) running on port 5002.
@@ -71,6 +75,17 @@ class HttpTTSToAudio:
                     "min": 0.0,
                     "max": 1.0
                 })
+                ,
+                "timeout_seconds": ("INT", {
+                    "default": 300,
+                    "min": 60,
+                    "max": 3600,
+                    "step": 10
+                })
+                ,
+                "auto_timeout": ("BOOLEAN", {
+                    "default": True
+                })
             }
         }
 
@@ -79,7 +94,7 @@ class HttpTTSToAudio:
     FUNCTION = "do_tts"
     CATEGORY = "geekatplay/TTS"
 
-    def do_tts(self, text, language, server_url, text_file_path="", output_directory="", voice="en-US-AriaNeural", rate=180, volume=1.0):
+    def do_tts(self, text, language, server_url, text_file_path="", output_directory="", voice="en-US-AriaNeural", rate=180, volume=1.0, timeout_seconds=300, auto_timeout=True):
         # Load text from file if provided
         if text_file_path:
             if os.path.isfile(text_file_path):
@@ -98,8 +113,17 @@ class HttpTTSToAudio:
         }
         
         try:
+            # Determine effective timeout
+            if auto_timeout:
+                words = len(text.split())
+                estimated_seconds = int(((words / 2.5) * 1.3) + 10)  # words/sec ~2.5; add 30% buffer + setup
+                estimated_seconds = max(60, min(3600, estimated_seconds))
+                effective_timeout = max(timeout_seconds, estimated_seconds)
+            else:
+                effective_timeout = timeout_seconds
+
             # Send TTS request to local server
-            resp = requests.post(server_url, json=payload, timeout=120)
+            resp = requests.post(server_url, json=payload, timeout=effective_timeout)
             resp.raise_for_status()
             data = resp.json()
             

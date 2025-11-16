@@ -1,5 +1,8 @@
 # ComfyUI Text-to-Speech Node Dependencies
-# GeekatPlay Studio - https://github.com/GeekatPlayStudio
+# GeekatPlay Studio
+# YouTube: @geekatplay | @geekatplay-ru
+# Patreon: https://patreon.com/geekatplay
+# GitHub: https://github.com/GeekatPlayStudio
 
 # Core TTS engines
 edge-tts       # Microsoft Edge TTS (primary, high-quality neural voices)

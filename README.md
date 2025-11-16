@@ -1,6 +1,10 @@
 # ComfyUI Text-to-Speech Node
 
-**GeekatPlay Studio** - https://github.com/GeekatPlayStudio
+**GeekatPlay Studio**
+
+- GitHub: https://github.com/GeekatPlayStudio
+- YouTube: [@geekatplay](https://youtube.com/@geekatplay) | [@geekatplay-ru](https://youtube.com/@geekatplay-ru) (Russian)
+- Patreon: https://patreon.com/geekatplay
 
 High-quality text-to-speech integration for ComfyUI workflows using Microsoft Edge TTS.
 
@@ -43,6 +47,8 @@ High-quality text-to-speech integration for ComfyUI workflows using Microsoft Ed
   - `voice`: Voice selection dropdown (13 Edge TTS voices)
   - `rate`: Speech rate 50-400 (default: 180)
   - `volume`: Volume 0.0-1.0 (default: 1.0)
+  - `timeout_seconds`: Request timeout 60-3600 seconds (default: 300)
+  - `auto_timeout`: Auto-adjust timeout based on text length (default: True)
 - Output: `audio_path` (STRING) - Path to generated WAV file
 
 **TTSServerStatus** (Category: `geekatplay/TTS`)
@@ -88,13 +94,24 @@ High-quality text-to-speech integration for ComfyUI workflows using Microsoft Ed
 - Offline mode uses pyttsx3 fallback with system voices
 - Ensure voice name matches dropdown options
 
+**Timeout on long files:**
+- Enable `auto_timeout` (default: True) to automatically scale timeout based on text length
+- Manually increase `timeout_seconds` (up to 3600) for very large scripts
+- For extremely long texts (>10k words), consider splitting into smaller chunks
+
 ## Requirements
 
 - Python 3.8+
 - Internet connection (for Edge TTS)
 - Dependencies: edge-tts, pyttsx3, flask, requests
 
-## License
+## Support & Community
 
-GeekatPlay Studio
+**GeekatPlay Studio**
+
+- 📺 YouTube: [@geekatplay](https://youtube.com/@geekatplay) | [@geekatplay-ru](https://youtube.com/@geekatplay-ru)
+- 💖 Patreon: https://patreon.com/geekatplay
+- 🐙 GitHub: https://github.com/GeekatPlayStudio
+
+Tutorials, workflows, and more custom nodes available on the YouTube channels!
 
