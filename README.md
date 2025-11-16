@@ -1,35 +1,36 @@
-# ComfyUI TTS HTTP Custom Node
+# ComfyUI-Text2Speech
 
-This custom node allows ComfyUI to integrate with a local TTS server for generating audio from text.
+A ComfyUI custom node for text-to-speech integration with a local TTS server.
 
-## Setup
+## Features
 
-### 1. Install TTS Server
+- Custom ComfyUI node `HttpTTSToAudio` for sending text to a local TTS server.
+- Local TTS server using Coqui TTS (XTTS v2 model).
+- Easy setup with batch files for Windows.
 
-Run `install.bat` to set up the virtual environment and install dependencies.
+## Prerequisites
 
-### 2. Run TTS Server
+- Python 3.8+ installed and added to PATH. Download from [python.org](https://www.python.org/downloads/).
 
-Run `run_tts.bat` to start the TTS server on `http://127.0.0.1:5002`.
+## Installation
 
-### 3. Install Dependencies in ComfyUI
+### TTS Server Setup
 
-Ensure `requests` is installed in your ComfyUI environment:
+1. Run `install.bat` to create a virtual environment and install dependencies.
+2. Run `run_tts.bat` to start the TTS server on `http://127.0.0.1:5002`.
 
-```bash
-pip install requests
-```
+### ComfyUI Node
 
-### 4. Restart ComfyUI
-
-Restart ComfyUI to load the custom node. You should see `HttpTTSToAudio` under `Audio/TTS`.
+1. Copy the `__init__.py` file to your ComfyUI `custom_nodes` folder (e.g., `ComfyUI/custom_nodes/ComfyUI_Text2Speech/__init__.py`).
+2. Install `requests` in your ComfyUI environment: `pip install requests`.
+3. Restart ComfyUI.
 
 ## Usage
 
-- Input text and language.
-- The node sends a POST request to the TTS server.
-- Returns the path to the generated audio file.
+- Use the `HttpTTSToAudio` node in ComfyUI under `Audio/TTS`.
+- Input text, language, and server URL.
+- Output is the path to the generated audio file.
 
-## Workflow Example
+## Workflow
 
-Connect the output `audio_path` to audio loading nodes in your ComfyUI workflow for video/audio processing.
+Connect the audio path to audio/video processing nodes in ComfyUI for creating TTS-enhanced content.
